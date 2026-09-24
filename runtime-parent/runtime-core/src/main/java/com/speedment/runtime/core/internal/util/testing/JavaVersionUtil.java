@@ -25,7 +25,8 @@ import static com.speedment.runtime.core.internal.util.testing.JavaVersionUtil.J
 public final class JavaVersionUtil {
 
     public enum JavaVersion {
-        UNKNOWN, EIGHT, NINE, TEN, ELEVEN, TWELVE, THIRTEEN, FOURTEEN
+        UNKNOWN, EIGHT, NINE, TEN, ELEVEN, TWELVE, THIRTEEN, FOURTEEN,FIFTEEN, SIXTEEN, SEVENTEEN, EIGHTEEN, NINETEEN, TWENTY,
+        TWENTY_ONE, TWENTY_TWO, TWENTY_THREE, TWENTY_FOUR, TWENTY_FIVE, TWENTY_SIX
     }
 
     public static boolean is8() {
@@ -55,7 +56,22 @@ public final class JavaVersionUtil {
     public static boolean is14() {
         return getJavaVersion() == FOURTEEN;
     }
+    public static boolean isLessThan(JavaVersion version) {
+        return getJavaVersion().ordinal() < version.ordinal();
+    }
 
+    public static boolean isLessThanOrEqualTo(JavaVersion version) {
+        return getJavaVersion().ordinal() <= version.ordinal();
+    }
+
+    public static boolean isGreaterThan(JavaVersion version) {
+        return getJavaVersion().ordinal() > version.ordinal();
+    }
+
+    public static boolean isGreaterThanOrEqualTo(JavaVersion version) {
+        return getJavaVersion().ordinal() >= version.ordinal();
+    }
+    
     public static JavaVersion getJavaVersion() {
         final String version = System.getProperty("java.specification.version");
         if (version == null) {
@@ -82,6 +98,18 @@ public final class JavaVersionUtil {
         if (version.startsWith("14")) {
             return FOURTEEN;
         }
+        if (version.startsWith("15")) { return FIFTEEN; }
+        if (version.startsWith("16")) { return SIXTEEN; }
+        if (version.startsWith("17")) { return SEVENTEEN; }
+        if (version.startsWith("18")) { return EIGHTEEN; }
+        if (version.startsWith("19")) { return NINETEEN; }
+        if (version.startsWith("20")) { return TWENTY; }
+        if (version.startsWith("21")) { return TWENTY_ONE; }
+        if (version.startsWith("22")) { return TWENTY_TWO; }
+        if (version.startsWith("23")) { return TWENTY_THREE; }
+        if (version.startsWith("24")) { return TWENTY_FOUR; }
+        if (version.startsWith("25")) { return TWENTY_FIVE; }
+        if (version.startsWith("26")) { return TWENTY_SIX; }
         return UNKNOWN;
     }
 

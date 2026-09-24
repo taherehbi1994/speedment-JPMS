@@ -17,67 +17,91 @@
 package com.speedment.common.injector.internal.execution;
 
 import com.speedment.common.injector.State;
+import com.speedment.common.injector.dependency.DependencyGraph;
+import com.speedment.common.injector.execution.Execution;
+import com.speedment.common.injector.execution.ExecutionBuilder;
+import com.speedment.common.injector.execution.ExecutionOneParamBuilder;
 import com.speedment.common.injector.execution.ExecutionZeroParamBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
 final class ExecutionZeroParamBuilderTest {
-
-    @Mock
+	// @Mock
     private ExecutionZeroParamBuilder<String> builder;
     private AtomicInteger cnt;
+    private State calledWith;
+    
 
     @BeforeEach
     void setup() {
         cnt = new AtomicInteger();
+        // I added this anonymous class
+        builder = new ExecutionZeroParamBuilder<String>() {
+            @Override
+            public <P0> ExecutionOneParamBuilder<String, P0> withState(State state, Class<P0> component) {
+                calledWith = state;
+                cnt.incrementAndGet();
+                return null;
+            }
+
+            @Override
+            public ExecutionBuilder<String> withExecute(Consumer<String> executeAction) {
+                return null;
+            }
+
+            @Override
+            public Execution<String> build(DependencyGraph graph) {
+                return null;
+            }
+        };
     }
 
     @Test
     void withStateInitialized() {
-        prepareMock(State.INITIALIZED);
-        when(builder.withStateInitialized(Long.class)).thenCallRealMethod();
+    	//prepareMock(State.INITIALIZED);
+        //when(builder.withStateInitialized(Long.class)).thenCallRealMethod();
         builder.withStateInitialized(Long.class);
         assertEquals(1, cnt.get());
+        assertEquals(State.INITIALIZED, calledWith);
     }
 
     @Test
     void withStateResolved() {
-        prepareMock(State.RESOLVED);
-        when(builder.withStateResolved(Long.class)).thenCallRealMethod();
+    	//prepareMock(State.RESOLVED);
+        //when(builder.withStateResolved(Long.class)).thenCallRealMethod();
         builder.withStateResolved(Long.class);
         assertEquals(1, cnt.get());
+        assertEquals(State.RESOLVED, calledWith);
     }
 
     @Test
     void withStateStarted() {
-        prepareMock(State.STARTED);
-        when(builder.withStateStarted(Long.class)).thenCallRealMethod();
+    	//prepareMock(State.STARTED);
+        //when(builder.withStateStarted(Long.class)).thenCallRealMethod();
         builder.withStateStarted(Long.class);
         assertEquals(1, cnt.get());
+        assertEquals(State.STARTED, calledWith);
     }
 
     @Test
     void withStateStopped() {
-        prepareMock(State.STOPPED);
-        when(builder.withStateStopped(Long.class)).thenCallRealMethod();
+    	//prepareMock(State.STOPPED);
+        //when(builder.withStateStopped(Long.class)).thenCallRealMethod();
         builder.withStateStopped(Long.class);
         assertEquals(1, cnt.get());
+        assertEquals(State.STOPPED, calledWith);
     }
-
-    private void prepareMock(State state) {
-        when(builder.withState(state, Long.class)).thenAnswer(invocationOnMock -> {
-            cnt.incrementAndGet();
-            return null;
-        });
-    }
+    
+//    private void prepareMock(State state) {
+//        when(builder.withState(state, Long.class)).thenAnswer(invocationOnMock -> {
+//            cnt.incrementAndGet();
+//            return null;
+//        });
+//    }
 
 }
