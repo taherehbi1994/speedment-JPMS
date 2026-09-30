@@ -22,6 +22,7 @@ open module com.speedment.tool.config {
     exports com.speedment.tool.config.provider;
     exports com.speedment.tool.config.trait;
     exports com.speedment.tool.config.util;
+    
 
     requires com.speedment.generator.translator;
 
